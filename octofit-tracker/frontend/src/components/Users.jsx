@@ -21,13 +21,16 @@ const normalizeCollection = (payload) => {
 function Users({ apiBaseUrl }) {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState('');
+  const apiPath = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/users/`
+    : 'http://localhost:8000/api/users/';
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadUsers() {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/users/`);
+        const response = await fetch(apiPath || `${apiBaseUrl}/api/users/`);
 
         if (!response.ok) {
           throw new Error(`Unable to load users (${response.status})`);

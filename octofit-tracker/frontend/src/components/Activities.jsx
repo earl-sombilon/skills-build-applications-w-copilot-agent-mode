@@ -21,13 +21,16 @@ const normalizeCollection = (payload) => {
 function Activities({ apiBaseUrl }) {
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState('');
+  const apiPath = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+    : 'http://localhost:8000/api/activities/';
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadActivities() {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/activities/`);
+        const response = await fetch(apiPath || `${apiBaseUrl}/api/activities/`);
 
         if (!response.ok) {
           throw new Error(`Unable to load activities (${response.status})`);

@@ -21,13 +21,16 @@ const normalizeCollection = (payload) => {
 function Workouts({ apiBaseUrl }) {
   const [workouts, setWorkouts] = useState([]);
   const [error, setError] = useState('');
+  const apiPath = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`
+    : 'http://localhost:8000/api/workouts/';
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadWorkouts() {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/workouts/`);
+        const response = await fetch(apiPath || `${apiBaseUrl}/api/workouts/`);
 
         if (!response.ok) {
           throw new Error(`Unable to load workouts (${response.status})`);

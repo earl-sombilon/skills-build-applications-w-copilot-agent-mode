@@ -21,13 +21,16 @@ const normalizeCollection = (payload) => {
 function Leaderboard({ apiBaseUrl }) {
   const [leaderboard, setLeaderboard] = useState([]);
   const [error, setError] = useState('');
+  const apiPath = import.meta.env.VITE_CODESPACE_NAME
+    ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`
+    : 'http://localhost:8000/api/leaderboard/';
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadLeaderboard() {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/leaderboard/`);
+        const response = await fetch(apiPath || `${apiBaseUrl}/api/leaderboard/`);
 
         if (!response.ok) {
           throw new Error(`Unable to load leaderboard (${response.status})`);
