@@ -1,5 +1,23 @@
 # React + Vite
 
+This frontend uses Vite environment variables for the API host.
+
+## Required environment variable
+
+Define `VITE_CODESPACE_NAME` in `.env.local` when running in GitHub Codespaces so the app can build the API base URL as:
+
+```text
+https://${VITE_CODESPACE_NAME}-8000.app.github.dev/api/[component]/
+```
+
+Example:
+
+```env
+VITE_CODESPACE_NAME=my-codespace
+```
+
+If `VITE_CODESPACE_NAME` is unset, the frontend falls back to `http://localhost:8000` to avoid broken `https://undefined-8000...` URLs.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

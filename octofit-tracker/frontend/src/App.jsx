@@ -1,122 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { NavLink, Route, Routes } from 'react-router-dom';
+import Activities from './components/Activities.jsx';
+import Leaderboard from './components/Leaderboard.jsx';
+import Teams from './components/Teams.jsx';
+import Users from './components/Users.jsx';
+import Workouts from './components/Workouts.jsx';
+import './App.css';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const apiBaseUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : 'http://localhost:8000';
+
+const navItems = [
+  { to: '/', label: 'Users' },
+  { to: '/activities', label: 'Activities' },
+  { to: '/teams', label: 'Teams' },
+  { to: '/leaderboard', label: 'Leaderboard' },
+  { to: '/workouts', label: 'Workouts' },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="container py-4">
+      <header className="mb-4 rounded-4 bg-dark text-white p-4 shadow-sm">
+        <div className="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+          <div>
+            <p className="text-uppercase small mb-1 text-info">Octofit Tracker</p>
+            <h1 className="h3 mb-0">Multi-tier fitness dashboard</h1>
+          </div>
+          <div className="text-light-emphasis small">
+            API base: {apiBaseUrl}
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <nav className="navbar navbar-expand-lg navbar-light bg-white rounded-4 shadow-sm px-3 mb-4">
+        <div className="container-fluid">
+          <div className="navbar-nav flex-row flex-wrap gap-2">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `nav-link rounded-pill px-3 ${isActive ? 'active bg-primary text-white' : 'text-dark'}`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </nav>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <Routes>
+        <Route path="/" element={<Users apiBaseUrl={apiBaseUrl} />} />
+        <Route path="/activities" element={<Activities apiBaseUrl={apiBaseUrl} />} />
+        <Route path="/teams" element={<Teams apiBaseUrl={apiBaseUrl} />} />
+        <Route path="/leaderboard" element={<Leaderboard apiBaseUrl={apiBaseUrl} />} />
+        <Route path="/workouts" element={<Workouts apiBaseUrl={apiBaseUrl} />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App
